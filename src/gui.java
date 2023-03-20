@@ -403,6 +403,7 @@ public class gui extends javax.swing.JFrame {
 
         };
 
+        // save
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
                 int a1 = Integer.parseInt(jTextField1.getText());
                 String a2 = jTextField2.getText();
@@ -419,6 +420,7 @@ public class gui extends javax.swing.JFrame {
 
         }
 
+        // reset
         private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1.setText("");
                 jTextField2.setText("");
@@ -430,49 +432,45 @@ public class gui extends javax.swing.JFrame {
 
         }
 
+        // update
         private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
                 System.out.println("update pressed");
-                jButton3.setBackground(new Color(26, 115, 232));
-                jTable1.getModel().addTableModelListener(new TableModelListener() {
+                // jButton3.setBackground(new Color(26, 115, 232));
+                if (jTable1.getModel() != data) {
+                        jTable1.setModel(data);
+                }
+                
+                fileconnect.saveData(data);
+                // data.addTableModelListener(new TableModelListener() {
 
-                        @Override
-                        public void tableChanged(TableModelEvent e) {
-                                DefaultTableModel d = (DefaultTableModel) e.getSource();
-                                int bookid = Integer.parseInt(d.getValueAt(e.getFirstRow(), 0).toString());
-                                String UserEntry = d.getValueAt(e.getFirstRow(), e.getColumn()).toString();
-                                String columnname = d.getColumnName(e.getColumn());
-                                dbconnect.updatetable(UserEntry, columnname, bookid, cc);
+                // @Override
+                // public void tableChanged(TableModelEvent e) {
+                // // DefaultTableModel d = (DefaultTableModel) e.getSource();
+                // // int bookid = Integer.parseInt(d.getValueAt(e.getFirstRow(),
+                // 0).toString());
+                // // String UserEntry = d.getValueAt(e.getFirstRow(),
+                // e.getColumn()).toString();
+                // // String columnname = d.getColumnName(e.getColumn());
+                // // dbconnect.updatetable(UserEntry, columnname, bookid, cc);
 
-                        }
+                // }
 
-                });
+                // });
         }
 
+        // refresh
         private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
                 jTable1.removeMouseListener(l);
                 jButton3.setBackground(mycolor);
                 jButton5.setBackground(mycolor);
-                ResultSet rs = dbconnect.refeshtable(cc);
-                DefaultTableModel model = new DefaultTableModel(new String[] {
-                                "bookid", "bookname", "authorname", "publications",
-                                "dateofpublications", "priceofbook",
-                                "totalquantitytoorder", "totalcost"
-                }, 0);
 
-                try {
-                        while (rs.next()) {
+                data = fileconnect.retrieve();
 
-                                Object[] obj = { rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                                                rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8) };
-                                model.addRow(obj);
-                        }
+                jTable1.setModel(data);
 
-                        jTable1.setModel(model);
-                } catch (Exception e) {
-                        System.out.println(e);
-                }
         }
 
+        // delete
         private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
                 jTable1.addMouseListener(l);
                 jButton5.setBackground(new Color(26, 115, 232));
@@ -481,27 +479,27 @@ public class gui extends javax.swing.JFrame {
 
         public static void main(String args[]) {
 
-                try {
-                        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
-                                        .getInstalledLookAndFeels()) {
-                                if ("Nimbus".equals(info.getName())) {
-                                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                                        break;
-                                }
-                        }
-                } catch (ClassNotFoundException ex) {
-                        java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (InstantiationException ex) {
-                        java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (IllegalAccessException ex) {
-                        java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                        java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
-                                        null, ex);
-                }
+                // try {
+                // for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
+                // .getInstalledLookAndFeels()) {
+                // if ("Nimbus".equals(info.getName())) {
+                // javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                // break;
+                // }
+                // }
+                // } catch (ClassNotFoundException ex) {
+                // java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
+                // null, ex);
+                // } catch (InstantiationException ex) {
+                // java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
+                // null, ex);
+                // } catch (IllegalAccessException ex) {
+                // java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
+                // null, ex);
+                // } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                // java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE,
+                // null, ex);
+                // }
                 // </editor-fold>
 
                 /* Create and display the form */
@@ -510,14 +508,14 @@ public class gui extends javax.swing.JFrame {
                                 new gui().setVisible(true);
                         }
                 });
-                try {
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        gui.cc = DriverManager.getConnection(
-                                        "jdbc:mysql://bookjungle.c9qyta5z7uyu.ap-southeast-2.rds.amazonaws.com:3306/BookJungle",
-                                        "admin", "bookjungle");
-                } catch (Exception e) {
-                        System.out.println(e);
-                }
+                // try {
+                // Class.forName("com.mysql.cj.jdbc.Driver");
+                // gui.cc = DriverManager.getConnection(
+                // "jdbc:mysql://bookjungle.c9qyta5z7uyu.ap-southeast-2.rds.amazonaws.com:3306/BookJungle",
+                // "admin", "bookjungle");
+                // } catch (Exception e) {
+                // System.out.println(e);
+                // }
 
         }
 
@@ -552,11 +550,7 @@ public class gui extends javax.swing.JFrame {
         private javax.swing.JTextField jTextField7;
         private Color mycolor;
         private static Connection cc;
-        private DefaultTableModel data = new DefaultTableModel(new String[] {
-                        "bookid", "bookname", "authorname", "publications",
-                        "dateofpublications", "priceofbook",
-                        "totalquantitytoorder", "totalcost"
-        }, 0);
+        private DefaultTableModel data = fileconnect.retrieve();
         // private javax.swing.JTextField jTextField8;
         // End of variables declaration
 }
