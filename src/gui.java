@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import javax.swing.event.MouseInputListener;
@@ -391,44 +392,13 @@ public class gui extends javax.swing.JFrame {
                 pack();
         }// </editor-fold>
 
-        MouseInputListener l = new MouseInputListener() {
+        MouseAdapter l = new MouseAdapter() {
 
-                @Override
                 public void mouseClicked(MouseEvent e) {
 
                         int bookid = Integer.parseInt(
                                         jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString());
                         dbconnect.deletion(bookid, cc);
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseDragged(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseMoved(MouseEvent e) {
-
                 }
 
         };
@@ -441,7 +411,9 @@ public class gui extends javax.swing.JFrame {
                 String a5 = jTextField5.getText(); // yyyy-mm-dd
                 int a6 = Integer.parseInt(jTextField6.getText());
                 int a7 = Integer.parseInt(jTextField7.getText());
-                dbconnect.SendingEntry(a1, a2, a3, a4, a5, a6, a7, cc);
+                Object[] rowData = { a1, a2, a3, a4, a5, a6, a7, a6 * a7 };
+                data.addRow(rowData);
+                fileconnect.saveData(data);
                 System.out.println("Added to database");
                 jButton2ActionPerformed(null);
 
@@ -580,6 +552,11 @@ public class gui extends javax.swing.JFrame {
         private javax.swing.JTextField jTextField7;
         private Color mycolor;
         private static Connection cc;
+        private DefaultTableModel data = new DefaultTableModel(new String[] {
+                        "bookid", "bookname", "authorname", "publications",
+                        "dateofpublications", "priceofbook",
+                        "totalquantitytoorder", "totalcost"
+        }, 0);
         // private javax.swing.JTextField jTextField8;
         // End of variables declaration
 }
