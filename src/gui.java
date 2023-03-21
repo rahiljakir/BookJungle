@@ -375,7 +375,6 @@ public class gui extends javax.swing.JFrame {
         MouseAdapter l = new MouseAdapter() {
 
                 public void mouseClicked(MouseEvent e) {
-
                         int bookid = Integer.parseInt(
                                         jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString());
                         dbconnect.deletion(bookid, cc);
@@ -453,20 +452,37 @@ public class gui extends javax.swing.JFrame {
 
         // refresh
         private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
-                jTable1.removeMouseListener(l);
-                jButton3.setBackground(mycolor);
-                jButton5.setBackground(mycolor);
+                // jTable1.removeMouseListener(l);
+                // jButton3.setBackground(mycolor);
+                // jButton5.setBackground(mycolor);
 
-                data = fileconnect.retrieve();
+                // data = fileconnect.retrieve();
 
-                jTable1.setModel(data);
+                // jTable1.setModel(data);
 
         }
 
         // delete
         private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
-                jTable1.addMouseListener(l);
                 jButton5.setBackground(new Color(26, 115, 232));
+                int bookid = Integer.parseInt(
+                                jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString());
+                DefaultTableModel newData = new DefaultTableModel(new String[] {
+                                "bookid", "bookname", "authorname", "publications",
+                                "dateofpublications", "priceofbook",
+                                "totalquantitytoorder", "totalcost"
+                }, 0);
+                ArrayList<Vector> Av = new ArrayList<>(data.getDataVector());
+                Iterator<Vector> Iv = Av.iterator();
+                while (Iv.hasNext()) {
+                        Vector o = Iv.next();
+                        if (Integer.parseInt(o.get(0).toString()) != bookid)
+                                newData.addRow((Vector) o);
+                }
+                fileconnect.saveData(newData);
+                jTable1.setModel(newData);
+                data = fileconnect.retrieve();
+                jButton5.setBackground(mycolor);
 
         }
 
