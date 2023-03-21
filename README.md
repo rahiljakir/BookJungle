@@ -1,4 +1,4 @@
-This Application Store Attribute of Book in your LocalFile Sysytem.
+This Application Store Attribute of Book in your LocalFile System.
 BookId(Integer Unique Number)
 priceOfbook(integer)
 totalQuantityToOrder(Integer)
