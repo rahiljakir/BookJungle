@@ -1,14 +1,8 @@
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
-
 import javax.swing.table.DefaultTableModel;
-import java.sql.*;
-
 public class gui extends javax.swing.JFrame {
 
         public gui() {
@@ -372,16 +366,6 @@ public class gui extends javax.swing.JFrame {
                 pack();
         }// </editor-fold>
 
-        MouseAdapter l = new MouseAdapter() {
-
-                public void mouseClicked(MouseEvent e) {
-                        int bookid = Integer.parseInt(
-                                        jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString());
-                        dbconnect.deletion(bookid, cc);
-                }
-
-        };
-
         // save
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
                 int a1 = Integer.parseInt(jTextField1.getText());
@@ -558,7 +542,7 @@ public class gui extends javax.swing.JFrame {
         private javax.swing.JTextField jTextField6;
         private javax.swing.JTextField jTextField7;
         private Color mycolor;
-        private static Connection cc;
+
         private DefaultTableModel data = fileconnect.retrieve();
         // private javax.swing.JTextField jTextField8;
         // End of variables declaration

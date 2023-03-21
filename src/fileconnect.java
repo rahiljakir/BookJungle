@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 public class fileconnect {
     public static DefaultTableModel retrieve() {
         try {
-            FileInputStream f = new FileInputStream("../data/books.dat");
+            FileInputStream f = new FileInputStream("./books.dat");
             ObjectInputStream fo = new ObjectInputStream(f);
             DefaultTableModel model = (DefaultTableModel) fo.readObject();
             fo.close();
@@ -27,7 +27,7 @@ public class fileconnect {
 
     public static void saveData(DefaultTableModel data) {
         try {
-            FileOutputStream f = new FileOutputStream("../data/books.dat");
+            FileOutputStream f = new FileOutputStream("./books.dat");
             ObjectOutputStream fo = new ObjectOutputStream(f);
             fo.writeObject(data);
             System.out.println("done saving to file");
