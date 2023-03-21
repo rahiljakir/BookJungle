@@ -1,8 +1,10 @@
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+
 public class gui extends javax.swing.JFrame {
 
         public gui() {
@@ -443,6 +445,11 @@ public class gui extends javax.swing.JFrame {
                 // data = fileconnect.retrieve();
 
                 // jTable1.setModel(data);
+
+                File f = new File("./books.data");
+                if (f.exists()) {
+                        f.delete();
+                }
 
         }
 
