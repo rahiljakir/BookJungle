@@ -1,10 +1,11 @@
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
-import javax.swing.event.MouseInputListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
+
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
@@ -260,28 +261,7 @@ public class gui extends javax.swing.JFrame {
 
                 jTable1.setBorder(javax.swing.BorderFactory.createCompoundBorder());
                 /* responsible for table data */
-                jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                                new Object[][] {
-                                                { null, null, null, null, null, null, null, null },
-                                                { null, null, null, null, null, null, null, null },
-                                                { null, null, null, null, null, null, null, null },
-                                                { null, null, null, null, null, null, null, null }
-                                },
-                                new String[] {
-                                                "bookid", "bookname", "authorname", "publications",
-                                                "dateofpublications", "priceofbook",
-                                                "totalquantitytoorder", "totalcost"
-                                })
-
-                {
-                        boolean[] canEdit = new boolean[] {
-                                        false, false, false, false, false, false, false, false
-                        };
-
-                        public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                return canEdit[columnIndex];
-                        }
-                });
+                jTable1.setModel(data);
 
                 jScrollPane1.setViewportView(jTable1);
 
@@ -415,6 +395,7 @@ public class gui extends javax.swing.JFrame {
                 Object[] rowData = { a1, a2, a3, a4, a5, a6, a7, a6 * a7 };
                 data.addRow(rowData);
                 fileconnect.saveData(data);
+                jTable1.setModel(data);
                 System.out.println("Added to database");
                 jButton2ActionPerformed(null);
 
@@ -435,12 +416,24 @@ public class gui extends javax.swing.JFrame {
         // update
         private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
                 System.out.println("update pressed");
-                // jButton3.setBackground(new Color(26, 115, 232));
-                if (jTable1.getModel() != data) {
-                        jTable1.setModel(data);
+                jButton3.setBackground(new Color(26, 115, 232));
+                DefaultTableModel newData = new DefaultTableModel(new String[] {
+                                "bookid", "bookname", "authorname", "publications",
+                                "dateofpublications", "priceofbook",
+                                "totalquantitytoorder", "totalcost"
+                }, 0);
+                ArrayList<Vector> Av = new ArrayList<>(data.getDataVector());
+                Iterator<Vector> Iv = Av.iterator();
+                while (Iv.hasNext()) {
+                        newData.addRow(Iv.next());
                 }
-                
-                fileconnect.saveData(data);
+
+                fileconnect.saveData(newData);
+                data = newData;
+                jButton3.setBackground(mycolor);
+                // Av.forEach((i)->{
+                // newData.addRow(i);
+                // });
                 // data.addTableModelListener(new TableModelListener() {
 
                 // @Override
